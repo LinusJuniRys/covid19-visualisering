@@ -1,0 +1,2314 @@
+<!DOCTYPE html>
+<html lang="da">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rysensteen Corona</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"
+    integrity="sha512-rKFvwjvE4liWPlFnvH4ZhRDfNZ9FOpdkD/BU5gAIA3VS3vOQrQ5BjKgbO3kxebKhHdHcNUHLqxQYSoxee9UwgA=="
+    crossorigin="anonymous"></script>
+  <!-- Laver favicon -->
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+  <meta name="msapplication-TileColor" content="#da532c">
+  <meta name="theme-color" content="#ffffff">
+
+  <style>
+    p {
+      color: black;
+    }
+
+    .nav-wrapper {
+      display: flex;
+      justify-content: space-between;
+      padding-left: 38px;
+      padding-bottom: 10px;
+      padding-top: 10px;
+      margin-bottom: -2px;
+      background-color: rgba(0, 0, 0, 0.08);
+      height: 30px;
+    }
+
+    .left-side {
+      display: flex;
+    }
+
+    .nav-wrapper>.left-side>div {
+      margin-right: 30px;
+      margin-top: -2px;
+      font-size: 0.9rem;
+    }
+
+    .nav-link-wrapper {
+      height: 22px;
+      border-bottom: 1px solid transparent;
+      transition: border-bottom 0.5s;
+    }
+
+    .active-nav-link {
+      border-bottom: 1px solid black;
+    }
+
+    .active-nav-link a {
+      color: black !important;
+    }
+
+    .rysensteen-logo {
+      margin-top: 25px;
+      margin-right: 10px;
+    }
+
+    .nav-link-wrapper a {
+      color: #8a8a8a;
+      text-decoration: none;
+      transition: color 0.5s;
+    }
+
+    .nav-link-wrapper:hover {
+      border-bottom: 1px solid black;
+    }
+
+    .graftitel_class {
+      text-align: center;
+    }
+
+    .footer-link-wrapper a {
+      color: black;
+      text-decoration: none;
+      transition: color 0.5s;
+    }
+
+    .button {
+      margin: 5px;
+      margin-right: 0px;
+      width: 100px;
+    }
+
+    canvas {
+      width: 2680px;
+      height: 1340px;
+      margin-left: 50px;
+      margin-right: 50px;
+    }
+
+    .footer-wrapper {
+      margin-top: 0px;
+      background-color: rgba(0, 0, 0, 0.08);
+      padding-top: 30px;
+      padding-bottom: 30px;
+    }
+
+    .footer-items {
+      display: flex;
+      padding-left: auto;
+    }
+
+    .footer-item {
+      padding-left: 60px;
+    }
+
+    /* Style the search box */
+    #mySearch {
+      width: 100%;
+      font-size: 18px;
+      padding: 11px;
+      border: 1px solid #ddd;
+    }
+
+    /* Style the navigation menu */
+    #myMenu {
+      list-style-type: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    /* Style the navigation links */
+    #myMenu li a {
+      padding: 12px;
+      text-decoration: none;
+      color: black;
+      display: block
+    }
+
+    #myMenu li a:hover {
+      background-color: #eee;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font: 16px Arial;
+    }
+
+    .autocomplete {
+      /*the container must be positioned relative:*/
+      position: relative;
+      display: inline-block;
+    }
+
+    input {
+      border: 1px solid transparent;
+      background-color: #f1f1f1;
+      padding: 10px;
+      font-size: 16px;
+    }
+
+    input[type=text] {
+      background-color: #f1f1f1;
+      width: 100%;
+    }
+
+    input[type=submit] {
+      background-color: DodgerBlue;
+      color: #fff;
+    }
+
+    .clear_button {
+      border: 1px solid transparent;
+      background-color: #f1f1f1;
+      padding: 10px;
+      font-size: 16px;
+      background-color: orangered;
+      color: #fff;
+    }
+
+    .autocomplete-items {
+      position: absolute;
+      border: 1px solid #d4d4d4;
+      border-bottom: none;
+      border-top: none;
+      z-index: 99;
+      /*position the autocomplete items to be the same width as the container:*/
+      top: 100%;
+      left: 0;
+      right: 0;
+    }
+
+    .autocomplete-items div {
+      padding: 10px;
+      cursor: pointer;
+      background-color: #fff;
+      border-bottom: 1px solid #d4d4d4;
+    }
+
+    .autocomplete-items div:hover {
+      /*when hovering an item:*/
+      background-color: #e9e9e9;
+    }
+
+    .autocomplete-active {
+      /*when navigating through the items using the arrow keys:*/
+      background-color: DodgerBlue !important;
+      color: #ffffff;
+    }
+
+    .center {
+      margin: auto;
+      width: 465px;
+    }
+
+    .submit_button:hover {
+      background-color: royalblue;
+    }
+
+    .clear_button:hover {
+      background-color: #c04e4c;
+    }
+  </style>
+
+</head>
+
+<body>
+
+  <div>
+    <div class="nav-wrapper">
+      <div class="left-side">
+        <div class="nav-link-wrapper">
+          <a onclick="changeTable(0)">SMITTEDE</a>
+        </div>
+        <div class="nav-link-wrapper">
+          <a onclick="changeTable(1)">DØDE</a>
+        </div>
+      </div>
+
+      <div class="right-side">
+        <div class="rysensteen-logo">
+          <!-- Husk at lave Rysensteen logo om til et link igen -->
+          <!-- <a href="https://rysensteen.dk"> -->
+          <img src="https://i.imgur.com/Ps5tbZw.png" alt="rysensteen-logo" style="width: 80px"
+            onclick="test_funktion()">
+          <!-- </a> -->
+        </div>
+      </div>
+    </div>
+  </div>
+  <h1 id="graftitel" class="graftitel_class">Loading...</h1>
+  <div class="center">
+    <div class="autocomplete" style="width:300px;">
+      <input id="myInput" type="text" name="myCountry" placeholder="Indtast et Land">
+    </div>
+    <input type="submit" onclick="tilfoejLand()" value="Tilføj" class="submit_button">
+    <button onclick="removeData()" class="clear_button">Slet alle</button>
+  </div>
+  <canvas id="graph" width="window.innerWidth" height="window.innerHeight"></canvas>
+  <script>
+    // Definere variablen der kommer til at indeholde selve grafen
+    var myChart;
+    // Definere listen der kommer til at indeholde alt data fra github omkring smittede/døde
+    var landdata = [];
+    // Definere listen der kommer til at indeholde alle lande der på nuværende tidspunkt ikke vises på grafen
+    var countries = [];
+    /*
+    Laver en liste over alt data omkring bl.a. landenes ISO kode, engelske og danske navne, population, hvilke datapunkter
+    der hører til dem i listen countries og deres farver (farverne, iso koden bruges ikke)
+    */
+    countries_iso_and_population = [
+      {
+        "iso": "AF",
+        "navne_en": "Afghanistan",
+        "navne_dk": "Afghanistan",
+        "population": 38041754,
+        "nummer": [],
+        "primaer_farve": "rgb(0,0,0)",
+        "sekundaer_farve": "rgb(0,0,0)"
+      },
+      {
+        "iso": "AL",
+        "navne_en": "Albania",
+        "navne_dk": "Albanien",
+        "population": 2854191,
+        "nummer": [],
+        "primaer_farve": "rgb(0,0,0)",
+        "sekundaer_farve": "rgb(0,0,0)"
+      },
+      {
+        "iso": "DZ",
+        "navne_en": "Algeria",
+        "navne_dk": "Algeriet",
+        "population": 43053054,
+        "nummer": [],
+        "primaer_farve": "rgb(0,0,0)",
+        "sekundaer_farve": "rgb(0,0,0)"
+      },
+      {
+        "iso": "AD",
+        "navne_en": "Andorra",
+        "navne_dk": "Andorra",
+        "population": 77142,
+        "nummer": [],
+        "primaer_farve": "rgb(0,0,0)",
+        "sekundaer_farve": "rgb(0,0,0)"
+      },
+      {
+        "iso": "AO",
+        "navne_en": "Angola",
+        "navne_dk": "Angola",
+        "population": 31825295,
+        "nummer": [],
+        "primaer_farve": "rgb(0,0,0)",
+        "sekundaer_farve": "rgb(0,0,0)"
+      },
+      {
+        "iso": "AG",
+        "navne_en": "Antigua and Barbuda",
+        "navne_dk": "Antigua og Barbuda",
+        "population": 97118,
+        "nummer": [],
+        "primaer_farve": "rgb(0,0,0)",
+        "sekundaer_farve": "rgb(0,0,0)"
+      },
+      {
+        "iso": "AR",
+        "navne_en": "Argentina",
+        "navne_dk": "Argentina",
+        "population": 44938712,
+        "nummer": [],
+        "primaer_farve": "rgb(0,0,0)",
+        "sekundaer_farve": "rgb(0,0,0)"
+      },
+      {
+        "iso": "AM",
+        "navne_en": "Armenia",
+        "navne_dk": "Armenien",
+        "population": 2957731,
+        "nummer": [],
+        "primaer_farve": "rgb(0,0,0)",
+        "sekundaer_farve": "rgb(0,0,0)"
+      },
+      {
+        "iso": "AU",
+        "navne_en": "Australia",
+        "navne_dk": "Australien",
+        "population": 25364307,
+        "nummer": [9, 10, 11, 12, 13, 14, 15, 16],
+        "primaer_farve": "rgb(0,0,0)",
+        "sekundaer_farve": "rgb(0,0,0)"
+      },
+      {
+        "iso": "AT",
+        "navne_en": "Austria",
+        "navne_dk": "Østrig",
+        "population": 8877067,
+        "nummer": [],
+        "primaer_farve": "rgb(0,0,0)",
+        "sekundaer_farve": "rgb(0,0,0)"
+      },
+      {
+        "iso": "AZ",
+        "navne_en": "Azerbaijan",
+        "navne_dk": "Aserbajdsjan",
+        "population": 10023318,
+        "nummer": [],
+        "primaer_farve": "rgb(0,0,0)",
+        "sekundaer_farve": "rgb(0,0,0)"
+      },
+      {
+        "iso": "BS",
+        "navne_en": "Bahamas",
+        "navne_dk": "Bahamas",
+        "population": 389482,
+        "nummer": [],
+        "primaer_farve": "rgb(0,0,0)",
+        "sekundaer_farve": "rgb(0,0,0)"
+      },
+      {
+        "iso": "BH",
+        "navne_en": "Bahrain",
+        "navne_dk": "Bahrain",
+        "population": 1501635,
+        "nummer": [],
+        "primaer_farve": "rgb(0,0,0)",
+        "sekundaer_farve": "rgb(0,0,0)"
+      },
+      {
+        "iso": "BD",
+        "navne_en": "Bangladesh",
+        "navne_dk": "Bangladesh",
+        "population": 163046161,
+        "nummer": [],
+        "primaer_farve": "rgb(0,0,0)",
+        "sekundaer_farve": "rgb(0,0,0)"
+      },
+      {
+        "iso": "BB",
+        "navne_en": "Barbados",
+        "navne_dk": "Barbados",
+        "population": 287025,
+        "nummer": [],
+        "primaer_farve": "rgb(0,0,0)",
+        "sekundaer_farve": "rgb(0,0,0)"
+      },
+      {
+        "iso": "BY",
+        "navne_en": "Belarus",
+        "navne_dk": "Hviderusland",
+        "population": 9466856,
+        "nummer": [],
+        "primaer_farve": "rgb(0,0,0)",
+        "sekundaer_farve": "rgb(0,0,0)"
+      },
+      {
+        "iso": "BE",
+        "navne_en": "Belgium",
+        "navne_dk": "Belgien",
+        "population": 11484055,
+        "nummer": [],
+        "primaer_farve": "rgb(0,0,0)",
+        "sekundaer_farve": "rgb(0,0,0)"
+      },
+      {
+        "iso": "BZ",
+        "navne_en": "Belize",
+        "navne_dk": "Belize",
+        "population": 390353,
+        "nummer": [],
+        "primaer_farve": "rgb(0,0,0)",
+        "sekundaer_farve": "rgb(0,0,0)"
+      },
+      {
+        "iso": "BJ",
+        "navne_en": "Benin",
+        "navne_dk": "Benin",
+        "population": 11801151,
+        "nummer": [],
+        "primaer_farve": "rgb(0,0,0)",
+        "sekundaer_farve": "rgb(0,0,0)"
+      },
+      {
+        "iso": "BT",
+        "navne_en": "Bhutan",
+        "navne_dk": "Bhutan",
+        "population": 763092,
+        "nummer": [],
+        "primaer_farve": "rgb(0,0,0)",
+        "sekundaer_farve": "rgb(0,0,0)"
+      },
+      {
+        "iso": "BO",
+        "navne_en": "Bolivia",
+        "navne_dk": "Bolivia",
+        "population": 11513100,
+        "nummer": [],
+        "primaer_farve": "rgb(0,0,0)",
+        "sekundaer_farve": "rgb(0,0,0)"
+      },
+      {
+        "iso": "BA",
+        "navne_en": "Bosnia and Herzegovina",
+        "navne_dk": "Bosnien-Hercegovina",
+        "population": 3301000,
+        "nummer": [],
+        "primaer_farve": "rgb(0,0,0)",
+        "sekundaer_farve": "rgb(0,0,0)"
+      },
+      {
+        "iso": "BW",
+        "navne_en": "Botswana",
+        "navne_dk": "Botswana",
+        "population": 2303697,
+        "nummer": [],
+        "primaer_farve": "rgb(0,0,0)",
+        "sekundaer_farve": "rgb(0,0,0)"
+      },
+      {
+        "iso": "BR",
+        "navne_en": "Brazil",
+        "navne_dk": "Brasilien",
+        "population": 212559417,
+        "nummer": [],
+        "primaer_farve": "rgb(0,0,0)",
+        "sekundaer_farve": "rgb(0,0,0)"
+      },
+      {
+        "iso": "BN",
+        "navne_en": "Brunei",
+        "navne_dk": "Brunei",
+        "population": 433285,
+        "nummer": [],
+        "primaer_farve": "rgb(0,0,0)",
+        "sekundaer_farve": "rgb(0,0,0)"
+      },
+      {
+        "iso": "BG",
+        "navne_en": "Bulgaria",
+        "navne_dk": "Bulgarien",
+        "population": 6975761,
+        "nummer": [],
+        "primaer_farve": "rgb(0,0,0)",
+        "sekundaer_farve": "rgb(0,0,0)"
+      },
+      {
+        "iso": "BF",
+        "navne_en": "Burkina Faso",
+        "navne_dk": "Burkina Faso",
+        "population": 20321378,
+        "nummer": [],
+        "primaer_farve": "rgb(0,0,0)",
+        "sekundaer_farve": "rgb(0,0,0)"
+      },
+      {
+        "iso": "BI",
+        "navne_en": "Burundi",
+        "navne_dk": "Burundi",
+        "population": 11530580,
+        "nummer": [],
+        "primaer_farve": "rgb(0,0,0)",
+        "sekundaer_farve": "rgb(0,0,0)"
+      },
+      {
+        "iso": "KH",
+        "navne_en": "Cambodia",
+        "navne_dk": "Cambodja",
+        "population": 16486542,
+        "nummer": [],
+        "primaer_farve": "rgb(0,0,0)",
+        "sekundaer_farve": "rgb(0,0,0)"
+      },
+      {
+        "iso": "CM",
+        "navne_en": "Cameroon",
+        "navne_dk": "Cameroun",
+        "population": 25876380,
+        "nummer": [],
+        "primaer_farve": "rgb(0,0,0)",
+        "sekundaer_farve": "rgb(0,0,0)"
+      },
+      {
+        "iso": "CA",
+        "navne_en": "Canada",
+        "navne_dk": "Canada",
+        "population": 37589262,
+        "nummer": [],
+        "primaer_farve": "rgb(0,0,0)",
+        "sekundaer_farve": "rgb(0,0,0)"
+      },
+      {
+        "iso": "CF",
+        "navne_en": "Central African Republic",
+        "navne_dk": "Den Centralafrikanske Republik",
+        "population": 4745185,
+        "nummer": [],
+        "primaer_farve": "rgb(0,0,0)",
+        "sekundaer_farve": "rgb(0,0,0)"
+      },
+      {
+        "iso": "TD",
+        "navne_en": "Chad",
+        "navne_dk": "Tchad",
+        "population": 15946876,
+        "nummer": [],
+        "primaer_farve": "rgb(0,0,0)",
+        "sekundaer_farve": "rgb(0,0,0)"
+      },
+      {
+        "iso": "CL",
+        "navne_en": "Chile",
+        "navne_dk": "Chile",
+        "population": 18952038,
+        "nummer": [],
+        "primaer_farve": "rgb(0,0,0)",
+        "sekundaer_farve": "rgb(0,0,0)"
+      },
+      {
+        "iso": "CN",
+        "navne_en": "China",
+        "navne_dk": "Kina",
+        "population": 1397715000,
+        "nummer": [],
+        "primaer_farve": "rgb(0,0,0)",
+        "sekundaer_farve": "rgb(0,0,0)"
+      },
+      {
+        "iso": "CO",
+        "navne_en": "Colombia",
+        "navne_dk": "Colombia",
+        "population": 50339443,
+        "nummer": [],
+        "primaer_farve": "rgb(0,0,0)",
+        "sekundaer_farve": "rgb(0,0,0)"
+      },
+      {
+        "iso": "KM",
+        "navne_en": "Comoros",
+        "navne_dk": "Comorerne",
+        "population": 850886,
+        "nummer": [],
+        "primaer_farve": "rgb(0,0,0)",
+        "sekundaer_farve": "rgb(0,0,0)"
+      },
+      {
+        "iso": "CG",
+        "navne_en": "Congo (Brazzaville)",
+        "navne_dk": "Congo",
+        "population": 5380508,
+        "nummer": [],
+        "primaer_farve": "rgb(0,0,0)",
+        "sekundaer_farve": "rgb(0,0,0)"
+      },
+      {
+        "iso": "CD",
+        "navne_en": "Congo (Kinshasa)",
+        "navne_dk": "Den Demokratiske Republik Congo",
+        "population": 86790567,
+        "nummer": [],
+        "primaer_farve": "rgb(0,0,0)",
+        "sekundaer_farve": "rgb(0,0,0)"
+      },
+      {
+        "iso": "CR",
+        "navne_en": "Costa Rica",
+        "navne_dk": "Costa Rica",
+        "population": 5047561,
+        "nummer": [],
+        "primaer_farve": "rgb(0,0,0)",
+        "sekundaer_farve": "rgb(0,0,0)"
+      },
+      {
+        "iso": "CI",
+        "navne_en": "Cote d'Ivoire",
+        "navne_dk": "Elfenbenskysten",
+        "population": 25716544,
+        "nummer": [],
+        "primaer_farve": "rgb(0,0,0)",
+        "sekundaer_farve": "rgb(0,0,0)"
+      },
+      {
+        "iso": "HR",
+        "navne_en": "Croatia",
+        "navne_dk": "Kroatien",
+        "population": 4067500,
+        "nummer": [],
+        "primaer_farve": "rgb(0,0,0)",
+        "sekundaer_farve": "rgb(0,0,0)"
+      },
+      {
+        "iso": "CU",
+        "navne_en": "Cuba",
+        "navne_dk": "Cuba",
+        "population": 11333483,
+        "nummer": [],
+        "primaer_farve": "rgb(0,0,0)",
+        "sekundaer_farve": "rgb(0,0,0)"
+      },
+      {
+        "iso": "CY",
+        "navne_en": "Cyprus",
+        "navne_dk": "Cypern",
+        "population": 1198575,
+        "nummer": [],
+        "primaer_farve": "rgb(0,0,0)",
+        "sekundaer_farve": "rgb(0,0,0)"
+      },
+      {
+        "iso": "CZ",
+        "navne_en": "Czechia",
+        "navne_dk": "Tjekkiet",
+        "population": 10669709,
+        "nummer": [],
+        "primaer_farve": "rgb(0,0,0)",
+        "sekundaer_farve": "rgb(0,0,0)"
+      },
+      {
+        "iso": "DK",
+        "navne_en": "Denmark",
+        "navne_dk": "Danmark",
+        "population": 5818553,
+        "nummer": [],
+        "primaer_farve": "rgb(0,0,0)",
+        "sekundaer_farve": "rgb(0,0,0)"
+      },
+      {
+        "iso": "DJ",
+        "navne_en": "Djibouti",
+        "navne_dk": "Djibouti",
+        "population": 973560,
+        "nummer": [],
+        "primaer_farve": "rgb(0,0,0)",
+        "sekundaer_farve": "rgb(0,0,0)"
+      },
+      {
+        "iso": "DM",
+        "navne_en": "Dominica",
+        "navne_dk": "Dominica",
+        "population": 71808,
+        "nummer": [],
+        "primaer_farve": "rgb(0,0,0)",
+        "sekundaer_farve": "rgb(0,0,0)"
+      },
+      {
+        "iso": "DO",
+        "navne_en": "Dominican Republic",
+        "navne_dk": "Dominikanske republik",
+        "population": 10738958,
+        "nummer": [],
+        "primaer_farve": "rgb(0,0,0)",
+        "sekundaer_farve": "rgb(0,0,0)"
+      },
+      {
+        "iso": "EC",
+        "navne_en": "Ecuador",
+        "navne_dk": "Ecuador",
+        "population": 17373662,
+        "nummer": [],
+        "primaer_farve": "rgb(0,0,0)",
+        "sekundaer_farve": "rgb(0,0,0)"
+      },
+      {
+        "iso": "EG",
+        "navne_en": "Egypt",
+        "navne_dk": "Egypten",
+        "population": 100388073,
+        "nummer": [],
+        "primaer_farve": "rgb(0,0,0)",
+        "sekundaer_farve": "rgb(0,0,0)"
+      },
+      {
+        "iso": "SV",
+        "navne_en": "El Salvador",
+        "navne_dk": "El Salvador",
+        "population": 6453553,
+        "nummer": [],
+        "primaer_farve": "rgb(0,0,0)",
+        "sekundaer_farve": "rgb(0,0,0)"
+      },
+      {
+        "iso": "GQ",
+        "navne_en": "Equatorial Guinea",
+        "navne_dk": "Ækvatorial Guinea",
+        "population": 1355986,
+        "nummer": [],
+        "primaer_farve": "rgb(0,0,0)",
+        "sekundaer_farve": "rgb(0,0,0)"
+      },
+      {
+        "iso": "ER",
+        "navne_en": "Eritrea",
+        "navne_dk": "Eritrea",
+        "population": 6333135,
+        "nummer": [],
+        "primaer_farve": "rgb(0,0,0)",
+        "sekundaer_farve": "rgb(0,0,0)"
+      },
+      {
+        "iso": "EE",
+        "navne_en": "Estonia",
+        "navne_dk": "Estland",
+        "population": 1326590,
+        "nummer": [],
+        "primaer_farve": "rgb(0,0,0)",
+        "sekundaer_farve": "rgb(0,0,0)"
+      },
+      {
+        "iso": "SZ",
+        "navne_en": "Eswatini",
+        "navne_dk": "Swaziland",
+        "population": 1093238,
+        "nummer": [],
+        "primaer_farve": "rgb(0,0,0)",
+        "sekundaer_farve": "rgb(0,0,0)"
+      },
+      {
+        "iso": "ET",
+        "navne_en": "Ethiopia",
+        "navne_dk": "Etiopien",
+        "population": 112078730,
+        "nummer": [],
+        "primaer_farve": "rgb(0,0,0)",
+        "sekundaer_farve": "rgb(0,0,0)"
+      },
+      {
+        "iso": "FJ",
+        "navne_en": "Fiji",
+        "navne_dk": "Fiji",
+        "population": 889953,
+        "nummer": [],
+        "primaer_farve": "rgb(0,0,0)",
+        "sekundaer_farve": "rgb(0,0,0)"
+      },
+      {
+        "iso": "FI",
+        "navne_en": "Finland",
+        "navne_dk": "Finland",
+        "population": 5520314,
+        "nummer": [],
+        "primaer_farve": "rgb(0,0,0)",
+        "sekundaer_farve": "rgb(0,0,0)"
+      },
+      {
+        "iso": "FR",
+        "navne_en": "France",
+        "navne_dk": "Frankrig",
+        "population": 67059887,
+        "nummer": [],
+        "primaer_farve": "rgb(0,0,0)",
+        "sekundaer_farve": "rgb(0,0,0)"
+      },
+      {
+        "iso": "GA",
+        "navne_en": "Gabon",
+        "navne_dk": "Gabon",
+        "population": 2172579,
+        "nummer": [],
+        "primaer_farve": "rgb(0,0,0)",
+        "sekundaer_farve": "rgb(0,0,0)"
+      },
+      {
+        "iso": "GM",
+        "navne_en": "Gambia",
+        "navne_dk": "Gambia",
+        "population": 2347706,
+        "nummer": [],
+        "primaer_farve": "rgb(0,0,0)",
+        "sekundaer_farve": "rgb(0,0,0)"
+      },
+      {
+        "iso": "GE",
+        "navne_en": "Georgia",
+        "navne_dk": "Georgien",
+        "population": 3720382,
+        "nummer": [],
+        "primaer_farve": "rgb(0,0,0)",
+        "sekundaer_farve": "rgb(0,0,0)"
+      },
+      {
+        "iso": "DE",
+        "navne_en": "Germany",
+        "navne_dk": "Tyskland",
+        "population": 83132799,
+        "nummer": [],
+        "primaer_farve": "rgb(0,0,0)",
+        "sekundaer_farve": "rgb(0,0,0)"
+      },
+      {
+        "iso": "GH",
+        "navne_en": "Ghana",
+        "navne_dk": "Ghana",
+        "population": 30417856,
+        "nummer": [],
+        "primaer_farve": "rgb(0,0,0)",
+        "sekundaer_farve": "rgb(0,0,0)"
+      },
+      {
+        "iso": "GR",
+        "navne_en": "Greece",
+        "navne_dk": "Grækenland",
+        "population": 10716322,
+        "nummer": [],
+        "primaer_farve": "rgb(0,0,0)",
+        "sekundaer_farve": "rgb(0,0,0)"
+      },
+      {
+        "iso": "GD",
+        "navne_en": "Grenada",
+        "navne_dk": "Grenada",
+        "population": 112003,
+        "nummer": [],
+        "primaer_farve": "rgb(0,0,0)",
+        "sekundaer_farve": "rgb(0,0,0)"
+      },
+      {
+        "iso": "GT",
+        "navne_en": "Guatemala",
+        "navne_dk": "Guatemala",
+        "population": 16604026,
+        "nummer": [],
+        "primaer_farve": "rgb(0,0,0)",
+        "sekundaer_farve": "rgb(0,0,0)"
+      },
+      {
+        "iso": "GN",
+        "navne_en": "Guinea",
+        "navne_dk": "Guinea",
+        "population": 12771246,
+        "nummer": [],
+        "primaer_farve": "rgb(0,0,0)",
+        "sekundaer_farve": "rgb(0,0,0)"
+      },
+      {
+        "iso": "GW",
+        "navne_en": "Guinea-Bissau",
+        "navne_dk": "Guinea-Bissau",
+        "population": 1920922,
+        "nummer": [],
+        "primaer_farve": "rgb(0,0,0)",
+        "sekundaer_farve": "rgb(0,0,0)"
+      },
+      {
+        "iso": "GY",
+        "navne_en": "Guyana",
+        "navne_dk": "Guyana",
+        "population": 782766,
+        "nummer": [],
+        "primaer_farve": "rgb(0,0,0)",
+        "sekundaer_farve": "rgb(0,0,0)"
+      },
+      {
+        "iso": "HT",
+        "navne_en": "Haiti",
+        "navne_dk": "Haiti",
+        "population": 11263077,
+        "nummer": [],
+        "primaer_farve": "rgb(0,0,0)",
+        "sekundaer_farve": "rgb(0,0,0)"
+      },
+      {
+        "iso": "HN",
+        "navne_en": "Honduras",
+        "navne_dk": "Honduras",
+        "population": 9746117,
+        "nummer": [],
+        "primaer_farve": "rgb(0,0,0)",
+        "sekundaer_farve": "rgb(0,0,0)"
+      },
+      {
+        "iso": "HU",
+        "navne_en": "Hungary",
+        "navne_dk": "Ungarn",
+        "population": 9769949,
+        "nummer": [],
+        "primaer_farve": "rgb(0,0,0)",
+        "sekundaer_farve": "rgb(0,0,0)"
+      },
+      {
+        "iso": "IS",
+        "navne_en": "Iceland",
+        "navne_dk": "Island",
+        "population": 361313,
+        "nummer": [],
+        "primaer_farve": "rgb(0,0,0)",
+        "sekundaer_farve": "rgb(0,0,0)"
+      },
+      {
+        "iso": "IN",
+        "navne_en": "India",
+        "navne_dk": "Indien",
+        "population": 1366417754,
+        "nummer": [],
+        "primaer_farve": "rgb(0,0,0)",
+        "sekundaer_farve": "rgb(0,0,0)"
+      },
+      {
+        "iso": "ID",
+        "navne_en": "Indonesia",
+        "navne_dk": "Indonesien",
+        "population": 270203917,
+        "nummer": [],
+        "primaer_farve": "rgb(0,0,0)",
+        "sekundaer_farve": "rgb(0,0,0)"
+      },
+      {
+        "iso": "IR",
+        "navne_en": "Iran",
+        "navne_dk": "Iran",
+        "population": 82913906,
+        "nummer": [],
+        "primaer_farve": "rgb(0,0,0)",
+        "sekundaer_farve": "rgb(0,0,0)"
+      },
+      {
+        "iso": "IQ",
+        "navne_en": "Iraq",
+        "navne_dk": "Irak",
+        "population": 39309783,
+        "nummer": [],
+        "primaer_farve": "rgb(0,0,0)",
+        "sekundaer_farve": "rgb(0,0,0)"
+      },
+      {
+        "iso": "IE",
+        "navne_en": "Ireland",
+        "navne_dk": "Irland",
+        "population": 4941444,
+        "nummer": [],
+        "primaer_farve": "rgb(0,0,0)",
+        "sekundaer_farve": "rgb(0,0,0)"
+      },
+      {
+        "iso": "IL",
+        "navne_en": "Israel",
+        "navne_dk": "Israel",
+        "population": 9053300,
+        "nummer": [],
+        "primaer_farve": "rgb(0,0,0)",
+        "sekundaer_farve": "rgb(0,0,0)"
+      },
+      {
+        "iso": "IT",
+        "navne_en": "Italy",
+        "navne_dk": "Italien",
+        "population": 60297396,
+        "nummer": [],
+        "primaer_farve": "rgb(0,0,0)",
+        "sekundaer_farve": "rgb(0,0,0)"
+      },
+      {
+        "iso": "JM",
+        "navne_en": "Jamaica",
+        "navne_dk": "Jamaica",
+        "population": 2948279,
+        "nummer": [],
+        "primaer_farve": "rgb(0,0,0)",
+        "sekundaer_farve": "rgb(0,0,0)"
+      },
+      {
+        "iso": "JP",
+        "navne_en": "Japan",
+        "navne_dk": "Japan",
+        "population": 126264931,
+        "nummer": [],
+        "primaer_farve": "rgb(0,0,0)",
+        "sekundaer_farve": "rgb(0,0,0)"
+      },
+      {
+        "iso": "JO",
+        "navne_en": "Jordan",
+        "navne_dk": "Jordan",
+        "population": 10101694,
+        "nummer": [],
+        "primaer_farve": "rgb(0,0,0)",
+        "sekundaer_farve": "rgb(0,0,0)"
+      },
+      {
+        "iso": "KZ",
+        "navne_en": "Kazakhstan",
+        "navne_dk": "Kasakhstan",
+        "population": 18513930,
+        "nummer": [],
+        "primaer_farve": "rgb(0,0,0)",
+        "sekundaer_farve": "rgb(0,0,0)"
+      },
+      {
+        "iso": "KE",
+        "navne_en": "Kenya",
+        "navne_dk": "Kenya",
+        "population": 52573973,
+        "nummer": [],
+        "primaer_farve": "rgb(0,0,0)",
+        "sekundaer_farve": "rgb(0,0,0)"
+      },
+      {
+        "iso": "KW",
+        "navne_en": "Kuwait",
+        "navne_dk": "Kuwait",
+        "population": 4207083,
+        "nummer": [],
+        "primaer_farve": "rgb(0,0,0)",
+        "sekundaer_farve": "rgb(0,0,0)"
+      },
+      {
+        "iso": "KG",
+        "navne_en": "Kyrgyzstan",
+        "navne_dk": "Kirgisistan",
+        "population": 6456900,
+        "nummer": [],
+        "primaer_farve": "rgb(0,0,0)",
+        "sekundaer_farve": "rgb(0,0,0)"
+      },
+      {
+        "iso": "LA",
+        "navne_en": "Laos",
+        "navne_dk": "Laos",
+        "population": 7169455,
+        "nummer": [],
+        "primaer_farve": "rgb(0,0,0)",
+        "sekundaer_farve": "rgb(0,0,0)"
+      },
+      {
+        "iso": "LV",
+        "navne_en": "Latvia",
+        "navne_dk": "Letland",
+        "population": 1912789,
+        "nummer": [],
+        "primaer_farve": "rgb(0,0,0)",
+        "sekundaer_farve": "rgb(0,0,0)"
+      },
+      {
+        "iso": "LB",
+        "navne_en": "Lebanon",
+        "navne_dk": "Libanon",
+        "population": 6855713,
+        "nummer": [],
+        "primaer_farve": "rgb(0,0,0)",
+        "sekundaer_farve": "rgb(0,0,0)"
+      },
+      {
+        "iso": "LS",
+        "navne_en": "Lesotho",
+        "navne_dk": "Lesotho",
+        "population": 2125268,
+        "nummer": [],
+        "primaer_farve": "rgb(0,0,0)",
+        "sekundaer_farve": "rgb(0,0,0)"
+      },
+      {
+        "iso": "LR",
+        "navne_en": "Liberia",
+        "navne_dk": "Liberia",
+        "population": 4937374,
+        "nummer": [],
+        "primaer_farve": "rgb(0,0,0)",
+        "sekundaer_farve": "rgb(0,0,0)"
+      },
+      {
+        "iso": "LY",
+        "navne_en": "Libya",
+        "navne_dk": "Libyen",
+        "population": 6777452,
+        "nummer": [],
+        "primaer_farve": "rgb(0,0,0)",
+        "sekundaer_farve": "rgb(0,0,0)"
+      },
+      {
+        "iso": "LI",
+        "navne_en": "Liechtenstein",
+        "navne_dk": "Liechtenstein",
+        "population": 38019,
+        "nummer": [],
+        "primaer_farve": "rgb(0,0,0)",
+        "sekundaer_farve": "rgb(0,0,0)"
+      },
+      {
+        "iso": "LT",
+        "navne_en": "Lithuania",
+        "navne_dk": "Litauen",
+        "population": 2786844,
+        "nummer": [],
+        "primaer_farve": "rgb(0,0,0)",
+        "sekundaer_farve": "rgb(0,0,0)"
+      },
+      {
+        "iso": "LU",
+        "navne_en": "Luxembourg",
+        "navne_dk": "Luxembourg",
+        "population": 619896,
+        "nummer": [],
+        "primaer_farve": "rgb(0,0,0)",
+        "sekundaer_farve": "rgb(0,0,0)"
+      },
+      {
+        "iso": "MG",
+        "navne_en": "Madagascar",
+        "navne_dk": "Madagaskar",
+        "population": 26969307,
+        "nummer": [],
+        "primaer_farve": "rgb(0,0,0)",
+        "sekundaer_farve": "rgb(0,0,0)"
+      },
+      {
+        "iso": "MW",
+        "navne_en": "Malawi",
+        "navne_dk": "Malawi",
+        "population": 18628747,
+        "nummer": [],
+        "primaer_farve": "rgb(0,0,0)",
+        "sekundaer_farve": "rgb(0,0,0)"
+      },
+      {
+        "iso": "MY",
+        "navne_en": "Malaysia",
+        "navne_dk": "Malaysia",
+        "population": 31949777,
+        "nummer": [],
+        "primaer_farve": "rgb(0,0,0)",
+        "sekundaer_farve": "rgb(0,0,0)"
+      },
+      {
+        "iso": "MV",
+        "navne_en": "Maldives",
+        "navne_dk": "Maldiverne",
+        "population": 530953,
+        "nummer": [],
+        "primaer_farve": "rgb(0,0,0)",
+        "sekundaer_farve": "rgb(0,0,0)"
+      },
+      {
+        "iso": "ML",
+        "navne_en": "Mali",
+        "navne_dk": "Mali",
+        "population": 19658031,
+        "nummer": [],
+        "primaer_farve": "rgb(0,0,0)",
+        "sekundaer_farve": "rgb(0,0,0)"
+      },
+      {
+        "iso": "MT",
+        "navne_en": "Malta",
+        "navne_dk": "Malta",
+        "population": 502653,
+        "nummer": [],
+        "primaer_farve": "rgb(0,0,0)",
+        "sekundaer_farve": "rgb(0,0,0)"
+      },
+      {
+        "iso": "MH",
+        "navne_en": "Marshall Islands",
+        "navne_dk": "Marshalløerne",
+        "population": 58791,
+        "nummer": [],
+        "primaer_farve": "rgb(0,0,0)",
+        "sekundaer_farve": "rgb(0,0,0)"
+      },
+      {
+        "iso": "MR",
+        "navne_en": "Mauritania",
+        "navne_dk": "Mauretanien",
+        "population": 4525696,
+        "nummer": [],
+        "primaer_farve": "rgb(0,0,0)",
+        "sekundaer_farve": "rgb(0,0,0)"
+      },
+      {
+        "iso": "MU",
+        "navne_en": "Mauritius",
+        "navne_dk": "Mauritius",
+        "population": 1265711,
+        "nummer": [],
+        "primaer_farve": "rgb(0,0,0)",
+        "sekundaer_farve": "rgb(0,0,0)"
+      },
+      {
+        "iso": "MX",
+        "navne_en": "Mexico",
+        "navne_dk": "Mexico",
+        "population": 126014024,
+        "nummer": [],
+        "primaer_farve": "rgb(0,0,0)",
+        "sekundaer_farve": "rgb(0,0,0)"
+      },
+      {
+        "iso": "MD",
+        "navne_en": "Moldova",
+        "navne_dk": "Moldova",
+        "population": 2657637,
+        "nummer": [],
+        "primaer_farve": "rgb(0,0,0)",
+        "sekundaer_farve": "rgb(0,0,0)"
+      },
+      {
+        "iso": "MC",
+        "navne_en": "Monaco",
+        "navne_dk": "Monaco",
+        "population": 38964,
+        "nummer": [],
+        "primaer_farve": "rgb(0,0,0)",
+        "sekundaer_farve": "rgb(0,0,0)"
+      },
+      {
+        "iso": "MN",
+        "navne_en": "Mongolia",
+        "navne_dk": "Mongoliet",
+        "population": 3225167,
+        "nummer": [],
+        "primaer_farve": "rgb(0,0,0)",
+        "sekundaer_farve": "rgb(0,0,0)"
+      },
+      {
+        "iso": "ME",
+        "navne_en": "Montenegro",
+        "navne_dk": "Montenegro",
+        "population": 622137,
+        "nummer": [],
+        "primaer_farve": "rgb(0,0,0)",
+        "sekundaer_farve": "rgb(0,0,0)"
+      },
+      {
+        "iso": "MA",
+        "navne_en": "Morocco",
+        "navne_dk": "Marokko",
+        "population": 36471769,
+        "nummer": [],
+        "primaer_farve": "rgb(0,0,0)",
+        "sekundaer_farve": "rgb(0,0,0)"
+      },
+      {
+        "iso": "MZ",
+        "navne_en": "Mozambique",
+        "navne_dk": "Mozambique",
+        "population": 30366036,
+        "nummer": [],
+        "primaer_farve": "rgb(0,0,0)",
+        "sekundaer_farve": "rgb(0,0,0)"
+      },
+      {
+        "iso": "MM",
+        "navne_en": "Burma",
+        "navne_dk": "Myanmar",
+        "population": 54045420,
+        "nummer": [],
+        "primaer_farve": "rgb(0,0,0)",
+        "sekundaer_farve": "rgb(0,0,0)"
+      },
+      {
+        "iso": "NA",
+        "navne_en": "Namibia",
+        "navne_dk": "Namibia",
+        "population": 2494530,
+        "nummer": [],
+        "primaer_farve": "rgb(0,0,0)",
+        "sekundaer_farve": "rgb(0,0,0)"
+      },
+      {
+        "iso": "NP",
+        "navne_en": "Nepal",
+        "navne_dk": "Nepal",
+        "population": 28608710,
+        "nummer": [],
+        "primaer_farve": "rgb(0,0,0)",
+        "sekundaer_farve": "rgb(0,0,0)"
+      },
+      {
+        "iso": "NL",
+        "navne_en": "Netherlands",
+        "navne_dk": "Holland",
+        "population": 17332850,
+        "nummer": [],
+        "primaer_farve": "rgb(0,0,0)",
+        "sekundaer_farve": "rgb(0,0,0)"
+      },
+      {
+        "iso": "NZ",
+        "navne_en": "New Zealand",
+        "navne_dk": "New Zealand",
+        "population": 4841000,
+        "nummer": [],
+        "primaer_farve": "rgb(0,0,0)",
+        "sekundaer_farve": "rgb(0,0,0)"
+      },
+      {
+        "iso": "NI",
+        "navne_en": "Nicaragua",
+        "navne_dk": "Nicaragua",
+        "population": 6545502,
+        "nummer": [],
+        "primaer_farve": "rgb(0,0,0)",
+        "sekundaer_farve": "rgb(0,0,0)"
+      },
+      {
+        "iso": "NE",
+        "navne_en": "Niger",
+        "navne_dk": "Niger",
+        "population": 23310715,
+        "nummer": [],
+        "primaer_farve": "rgb(0,0,0)",
+        "sekundaer_farve": "rgb(0,0,0)"
+      },
+      {
+        "iso": "NG",
+        "navne_en": "Nigeria",
+        "navne_dk": "Nigeria",
+        "population": 200963599,
+        "nummer": [],
+        "primaer_farve": "rgb(0,0,0)",
+        "sekundaer_farve": "rgb(0,0,0)"
+      },
+      {
+        "iso": "MK",
+        "navne_en": "North Macedonia",
+        "navne_dk": "Nordmakedonien",
+        "population": 2107158,
+        "nummer": [],
+        "primaer_farve": "rgb(0,0,0)",
+        "sekundaer_farve": "rgb(0,0,0)"
+      },
+      {
+        "iso": "NO",
+        "navne_en": "Norway",
+        "navne_dk": "Norge",
+        "population": 5347896,
+        "nummer": [],
+        "primaer_farve": "rgb(0,0,0)",
+        "sekundaer_farve": "rgb(0,0,0)"
+      },
+      {
+        "iso": "OM",
+        "navne_en": "Oman",
+        "navne_dk": "Oman",
+        "population": 4974986,
+        "nummer": [],
+        "primaer_farve": "rgb(0,0,0)",
+        "sekundaer_farve": "rgb(0,0,0)"
+      },
+      {
+        "iso": "PK",
+        "navne_en": "Pakistan",
+        "navne_dk": "Pakistan",
+        "population": 216565318,
+        "nummer": [],
+        "primaer_farve": "rgb(0,0,0)",
+        "sekundaer_farve": "rgb(0,0,0)"
+      },
+      {
+        "iso": "PA",
+        "navne_en": "Panama",
+        "navne_dk": "Panama",
+        "population": 4246439,
+        "nummer": [],
+        "primaer_farve": "rgb(0,0,0)",
+        "sekundaer_farve": "rgb(0,0,0)"
+      },
+      {
+        "iso": "PG",
+        "navne_en": "Papua New Guinea",
+        "navne_dk": "Papua Ny Guinea",
+        "population": 8776109,
+        "nummer": [],
+        "primaer_farve": "rgb(0,0,0)",
+        "sekundaer_farve": "rgb(0,0,0)"
+      },
+      {
+        "iso": "PY",
+        "navne_en": "Paraguay",
+        "navne_dk": "Paraguay",
+        "population": 7044636,
+        "nummer": [],
+        "primaer_farve": "rgb(0,0,0)",
+        "sekundaer_farve": "rgb(0,0,0)"
+      },
+      {
+        "iso": "PE",
+        "navne_en": "Peru",
+        "navne_dk": "Peru",
+        "population": 32510453,
+        "nummer": [],
+        "primaer_farve": "rgb(0,0,0)",
+        "sekundaer_farve": "rgb(0,0,0)"
+      },
+      {
+        "iso": "PH",
+        "navne_en": "Philippines",
+        "navne_dk": "Filippinerne",
+        "population": 108116615,
+        "nummer": [],
+        "primaer_farve": "rgb(0,0,0)",
+        "sekundaer_farve": "rgb(0,0,0)"
+      },
+      {
+        "iso": "PL",
+        "navne_en": "Poland",
+        "navne_dk": "Polen",
+        "population": 37970874,
+        "nummer": [],
+        "primaer_farve": "rgb(0,0,0)",
+        "sekundaer_farve": "rgb(0,0,0)"
+      },
+      {
+        "iso": "PT",
+        "navne_en": "Portugal",
+        "navne_dk": "Portugal",
+        "population": 10269417,
+        "nummer": [],
+        "primaer_farve": "rgb(0,0,0)",
+        "sekundaer_farve": "rgb(0,0,0)"
+      },
+      {
+        "iso": "QA",
+        "navne_en": "Qatar",
+        "navne_dk": "Qatar",
+        "population": 2832067,
+        "nummer": [],
+        "primaer_farve": "rgb(0,0,0)",
+        "sekundaer_farve": "rgb(0,0,0)"
+      },
+      {
+        "iso": "RO",
+        "navne_en": "Romania",
+        "navne_dk": "Rumænien",
+        "population": 19356544,
+        "nummer": [],
+        "primaer_farve": "rgb(0,0,0)",
+        "sekundaer_farve": "rgb(0,0,0)"
+      },
+      {
+        "iso": "RU",
+        "navne_en": "Russia",
+        "navne_dk": "Rusland",
+        "population": 144373535,
+        "nummer": [],
+        "primaer_farve": "rgb(0,0,0)",
+        "sekundaer_farve": "rgb(0,0,0)"
+      },
+      {
+        "iso": "RW",
+        "navne_en": "Rwanda",
+        "navne_dk": "Rwanda",
+        "population": 12626950,
+        "nummer": [],
+        "primaer_farve": "rgb(0,0,0)",
+        "sekundaer_farve": "rgb(0,0,0)"
+      },
+      {
+        "iso": "WS",
+        "navne_en": "Samoa",
+        "navne_dk": "Samoa",
+        "population": 202506,
+        "nummer": [],
+        "primaer_farve": "rgb(0,0,0)",
+        "sekundaer_farve": "rgb(0,0,0)"
+      },
+      {
+        "iso": "SM",
+        "navne_en": "San Marino",
+        "navne_dk": "San Marino",
+        "population": 33860,
+        "nummer": [],
+        "primaer_farve": "rgb(0,0,0)",
+        "sekundaer_farve": "rgb(0,0,0)"
+      },
+      {
+        "iso": "ST",
+        "navne_en": "Sao Tome and Principe",
+        "navne_dk": "Sao Tome og Principe",
+        "population": 215056,
+        "nummer": [],
+        "primaer_farve": "rgb(0,0,0)",
+        "sekundaer_farve": "rgb(0,0,0)"
+      },
+      {
+        "iso": "SA",
+        "navne_en": "Saudi Arabia",
+        "navne_dk": "Saudi Arabien",
+        "population": 34268528,
+        "nummer": [],
+        "primaer_farve": "rgb(0,0,0)",
+        "sekundaer_farve": "rgb(0,0,0)"
+      },
+      {
+        "iso": "SN",
+        "navne_en": "Senegal",
+        "navne_dk": "Senegal",
+        "population": 16296364,
+        "nummer": [],
+        "primaer_farve": "rgb(0,0,0)",
+        "sekundaer_farve": "rgb(0,0,0)"
+      },
+      {
+        "iso": "RS",
+        "navne_en": "Serbia",
+        "navne_dk": "Serbien",
+        "population": 6944975,
+        "nummer": [],
+        "primaer_farve": "rgb(0,0,0)",
+        "sekundaer_farve": "rgb(0,0,0)"
+      },
+      {
+        "iso": "SC",
+        "navne_en": "Seychelles",
+        "navne_dk": "Seychellerne",
+        "population": 97625,
+        "nummer": [],
+        "primaer_farve": "rgb(0,0,0)",
+        "sekundaer_farve": "rgb(0,0,0)"
+      },
+      {
+        "iso": "SL",
+        "navne_en": "Sierra Leone",
+        "navne_dk": "Sierra Leone",
+        "population": 7813215,
+        "nummer": [],
+        "primaer_farve": "rgb(0,0,0)",
+        "sekundaer_farve": "rgb(0,0,0)"
+      },
+      {
+        "iso": "SG",
+        "navne_en": "Singapore",
+        "navne_dk": "Singapore",
+        "population": 5703569,
+        "nummer": [],
+        "primaer_farve": "rgb(0,0,0)",
+        "sekundaer_farve": "rgb(0,0,0)"
+      },
+      {
+        "iso": "SK",
+        "navne_en": "Slovakia",
+        "navne_dk": "Slovakiet",
+        "population": 5454073,
+        "nummer": [],
+        "primaer_farve": "rgb(0,0,0)",
+        "sekundaer_farve": "rgb(0,0,0)"
+      },
+      {
+        "iso": "SI",
+        "navne_en": "Slovenia",
+        "navne_dk": "Slovenien",
+        "population": 2087946,
+        "nummer": [],
+        "primaer_farve": "rgb(0,0,0)",
+        "sekundaer_farve": "rgb(0,0,0)"
+      },
+      {
+        "iso": "SO",
+        "navne_en": "Somalia",
+        "navne_dk": "Somalia",
+        "population": 15442905,
+        "nummer": [],
+        "primaer_farve": "rgb(0,0,0)",
+        "sekundaer_farve": "rgb(0,0,0)"
+      },
+      {
+        "iso": "ZA",
+        "navne_en": "South Africa",
+        "navne_dk": "Sydafrika",
+        "population": 58558270,
+        "nummer": [],
+        "primaer_farve": "rgb(0,0,0)",
+        "sekundaer_farve": "rgb(0,0,0)"
+      },
+      {
+        "iso": "KR",
+        "navne_en": "Korea, South",
+        "navne_dk": "Sydkorea",
+        "population": 51709098,
+        "nummer": [],
+        "primaer_farve": "rgb(0,0,0)",
+        "sekundaer_farve": "rgb(0,0,0)"
+      },
+      {
+        "iso": "SS",
+        "navne_en": "South Sudan",
+        "navne_dk": "Sydsudan",
+        "population": 11062113,
+        "nummer": [],
+        "primaer_farve": "rgb(0,0,0)",
+        "sekundaer_farve": "rgb(0,0,0)"
+      },
+      {
+        "iso": "ES",
+        "navne_en": "Spain",
+        "navne_dk": "Spanien",
+        "population": 47450795,
+        "nummer": [],
+        "primaer_farve": "rgb(0,0,0)",
+        "sekundaer_farve": "rgb(0,0,0)"
+      },
+      {
+        "iso": "LK",
+        "navne_en": "Sri Lanka",
+        "navne_dk": "Sri Lanka",
+        "population": 21803000,
+        "nummer": [],
+        "primaer_farve": "rgb(0,0,0)",
+        "sekundaer_farve": "rgb(0,0,0)"
+      },
+      {
+        "iso": "SD",
+        "navne_en": "Sudan",
+        "navne_dk": "Sudan",
+        "population": 42813238,
+        "nummer": [],
+        "primaer_farve": "rgb(0,0,0)",
+        "sekundaer_farve": "rgb(0,0,0)"
+      },
+      {
+        "iso": "SR",
+        "navne_en": "Suriname",
+        "navne_dk": "Surinam",
+        "population": 581372,
+        "nummer": [],
+        "primaer_farve": "rgb(0,0,0)",
+        "sekundaer_farve": "rgb(0,0,0)"
+      },
+      {
+        "iso": "SE",
+        "navne_en": "Sweden",
+        "navne_dk": "Sverige",
+        "population": 10285453,
+        "nummer": [],
+        "primaer_farve": "rgb(0,0,0)",
+        "sekundaer_farve": "rgb(0,0,0)"
+      },
+      {
+        "iso": "CH",
+        "navne_en": "Switzerland",
+        "navne_dk": "Schweiz",
+        "population": 8574832,
+        "nummer": [],
+        "primaer_farve": "rgb(0,0,0)",
+        "sekundaer_farve": "rgb(0,0,0)"
+      },
+      {
+        "iso": "SY",
+        "navne_en": "Syria",
+        "navne_dk": "Syrien",
+        "population": 17070135,
+        "nummer": [],
+        "primaer_farve": "rgb(0,0,0)",
+        "sekundaer_farve": "rgb(0,0,0)"
+      },
+      {
+        "iso": "TW",
+        "navne_en": "Taiwan*",
+        "navne_dk": "Taiwan",
+        "population": 23340136,
+        "nummer": [],
+        "primaer_farve": "rgb(0,0,0)",
+        "sekundaer_farve": "rgb(0,0,0)"
+      },
+      {
+        "iso": "TJ",
+        "navne_en": "Tajikistan",
+        "navne_dk": "Tadsjikistan",
+        "population": 9321018,
+        "nummer": [],
+        "primaer_farve": "rgb(0,0,0)",
+        "sekundaer_farve": "rgb(0,0,0)"
+      },
+      {
+        "iso": "TZ",
+        "navne_en": "Tanzania",
+        "navne_dk": "Tanzania",
+        "population": 58005463,
+        "nummer": [],
+        "primaer_farve": "rgb(0,0,0)",
+        "sekundaer_farve": "rgb(0,0,0)"
+      },
+      {
+        "iso": "TH",
+        "navne_en": "Thailand",
+        "navne_dk": "Thailand",
+        "population": 69625582,
+        "nummer": [],
+        "primaer_farve": "rgb(0,0,0)",
+        "sekundaer_farve": "rgb(0,0,0)"
+      },
+      {
+        "iso": "TL",
+        "navne_en": "Timor-Leste",
+        "navne_dk": "Timor-Leste",
+        "population": 3500000,
+        "nummer": [],
+        "primaer_farve": "rgb(0,0,0)",
+        "sekundaer_farve": "rgb(0,0,0)"
+      },
+      {
+        "iso": "TG",
+        "navne_en": "Togo",
+        "navne_dk": "Togo",
+        "population": 8082366,
+        "nummer": [],
+        "primaer_farve": "rgb(0,0,0)",
+        "sekundaer_farve": "rgb(0,0,0)"
+      },
+      {
+        "iso": "TT",
+        "navne_en": "Trinidad and Tobago",
+        "navne_dk": "Trinidad og Tobago",
+        "population": 1394973,
+        "nummer": [],
+        "primaer_farve": "rgb(0,0,0)",
+        "sekundaer_farve": "rgb(0,0,0)"
+      },
+      {
+        "iso": "TN",
+        "navne_en": "Tunisia",
+        "navne_dk": "Tunesien",
+        "population": 11694719,
+        "nummer": [],
+        "primaer_farve": "rgb(0,0,0)",
+        "sekundaer_farve": "rgb(0,0,0)"
+      },
+      {
+        "iso": "TR",
+        "navne_en": "Turkey",
+        "navne_dk": "Kalkun",
+        "population": 83429615,
+        "nummer": [],
+        "primaer_farve": "rgb(0,0,0)",
+        "sekundaer_farve": "rgb(0,0,0)"
+      },
+      {
+        "iso": "UG",
+        "navne_en": "Uganda",
+        "navne_dk": "Uganda",
+        "population": 44269594,
+        "nummer": [],
+        "primaer_farve": "rgb(0,0,0)",
+        "sekundaer_farve": "rgb(0,0,0)"
+      },
+      {
+        "iso": "UA",
+        "navne_en": "Ukraine",
+        "navne_dk": "Ukraine",
+        "population": 44385155,
+        "nummer": [],
+        "primaer_farve": "rgb(0,0,0)",
+        "sekundaer_farve": "rgb(0,0,0)"
+      },
+      {
+        "iso": "AE",
+        "navne_en": "United Arab Emirates",
+        "navne_dk": "Forenede Arabiske Emirater",
+        "population": 9770529,
+        "nummer": [],
+        "primaer_farve": "rgb(0,0,0)",
+        "sekundaer_farve": "rgb(0,0,0)"
+      },
+      {
+        "iso": "GB",
+        "navne_en": "United Kingdom",
+        "navne_dk": "England",
+        "population": 66834405,
+        "nummer": [],
+        "primaer_farve": "rgb(0,0,0)",
+        "sekundaer_farve": "rgb(0,0,0)"
+      },
+      {
+        "iso": "US",
+        "navne_en": "US",
+        "navne_dk": "USA",
+        "population": 328239523,
+        "nummer": [],
+        "primaer_farve": "rgb(0,0,0)",
+        "sekundaer_farve": "rgb(0,0,0)"
+      },
+      {
+        "iso": "UY",
+        "navne_en": "Uruguay",
+        "navne_dk": "Uruguay",
+        "population": 3461734,
+        "nummer": [],
+        "primaer_farve": "rgb(0,0,0)",
+        "sekundaer_farve": "rgb(0,0,0)"
+      },
+      {
+        "iso": "UZ",
+        "navne_en": "Uzbekistan",
+        "navne_dk": "Usbekistan",
+        "population": 33580650,
+        "nummer": [],
+        "primaer_farve": "rgb(0,0,0)",
+        "sekundaer_farve": "rgb(0,0,0)"
+      },
+      {
+        "iso": "VU",
+        "navne_en": "Vanuatu",
+        "navne_dk": "Vanuatu",
+        "population": 299882,
+        "nummer": [],
+        "primaer_farve": "rgb(0,0,0)",
+        "sekundaer_farve": "rgb(0,0,0)"
+      },
+      {
+        "iso": "VE",
+        "navne_en": "Venezuela",
+        "navne_dk": "Venezuela",
+        "population": 28515829,
+        "nummer": [],
+        "primaer_farve": "rgb(0,0,0)",
+        "sekundaer_farve": "rgb(0,0,0)"
+      },
+      {
+        "iso": "VN",
+        "navne_en": "Vietnam",
+        "navne_dk": "Vietnam",
+        "population": 96462106,
+        "nummer": [],
+        "primaer_farve": "rgb(0,0,0)",
+        "sekundaer_farve": "rgb(0,0,0)"
+      },
+      {
+        "iso": "YE",
+        "navne_en": "Yemen",
+        "navne_dk": "Yemen",
+        "population": 29161922,
+        "nummer": [],
+        "primaer_farve": "rgb(0,0,0)",
+        "sekundaer_farve": "rgb(0,0,0)"
+      },
+      {
+        "iso": "ZM",
+        "navne_en": "Zambia",
+        "navne_dk": "Zambia",
+        "population": 17861030,
+        "nummer": [],
+        "primaer_farve": "rgb(0,0,0)",
+        "sekundaer_farve": "rgb(0,0,0)"
+      },
+      {
+        "iso": "ZW",
+        "navne_en": "Zimbabwe",
+        "navne_dk": "Zimbabwe",
+        "population": 14645468,
+        "nummer": [],
+        "primaer_farve": "rgb(0,0,0)",
+        "sekundaer_farve": "rgb(0,0,0)"
+      }
+    ]
+
+    /*
+    Denne funktion går igennem alle lande i landdata og finder de datapunkter fra countries_iso_and_population som landene
+    hænger sammen med, disse værdier sætter den ind i countries_iso_and_population nummer property
+    */
+    function find_data_punkter(landdata) {
+      for (i = 1; i < landdata.length; i++) {
+        for (j = 0; j < countries_iso_and_population.length; j++) {
+          if (landdata[i][1] == countries_iso_and_population[j].navne_en) {
+            countries_iso_and_population[j].nummer.push(i)
+          }
+        }
+      }
+    }
+
+    // Alle landenes danske navne kopieres fra countries_iso_and_population og sættes ind i variablen countries
+    for (i = 0; i < countries_iso_and_population.length; i++) {
+      countries.push(countries_iso_and_population[i].navne_dk)
+    }
+
+    // Denne funktion gør at autocomplete search baren virker med landene i listen countries
+    autocomplete(document.getElementById("myInput"), countries);
+
+    // Tjekker om browseren er safari ved at se om skaberen er "Apple Computer, Inc."
+    function test_browser_er_safari() {
+      if (navigator.vendor !== "Apple Computer, Inc.") {
+        alert("Bemærk denne hjemmeside er optimiseret til Safari.\nDet anbefales derfor at anvende Safari for den bedste oplevelse.")
+      }
+    }
+
+    // Bare en test funktion som kører hver gang der trykkes på rysensteen logoet
+    function test_funktion() {
+
+    }
+
+    /*
+    Denne funktion tager imod tre ting: en link, en callBack funktion. Papaparse er et program som vi anvender
+    til at gøre koden til en javascript liste bestående af lister. Papaparse bruger linket til at finde dataet der skal laves om til lister.
+    Efter den har gjort det kalder den på callBack funktionen og sætter dataet fra John Hopskins som parametre.
+    */
+    function parseData(url, callBack) {
+      Papa.parse(url, {
+        download: true,
+        // Dynamic typing er bare at den selv finder ud af hvad der er string, tal etc.
+        dynamicTyping: true,
+        complete: function (results) {
+          callBack(results.data);
+        }
+      });
+    }
+
+    // Definerer linkene til de to datapunkter og kører parseData funktionen med link_smittede og callback funktionen tabelSmittede, som kører efter parseData.
+    const link_doed = "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_deaths_global.csv"
+    const link_smittede = "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv"
+    parseData(link_smittede, tabelSmittede);
+
+    /*
+    Denne funktion kører hver gang at grafen skal skiftes. Changetable tager imod to
+    */
+    function changeTable(number) {
+      removeData()
+      myChart.destroy()
+      if (number === 0) {
+        parseData(link_smittede, tabelSmittede);
+      }
+      else if (number === 1) {
+        parseData(link_doed, tabeldoede);
+      }
+    }
+
+    // Sætter dataen ind i tabellen
+    function tabeldoede(data) {
+      find_data_punkter(data)
+      document.getElementById('graftitel').innerHTML = "Dødstal pr. 100.000 indbyggere";
+      // Gør dataen global
+      landdata = JSON.parse(JSON.stringify(data))
+      // Console logger data for nem debugging
+      console.log(landdata)
+      // Finder datoerne i data og sætter dem lig til variablen datoer
+      datoer = data[0].slice(4)
+      // Konstruere grafen
+      var graf = document.getElementById('graph').getContext('2d');
+      var labels = datoer
+      myChart = new Chart(graf, {
+        type: 'line',
+        data: {
+          labels: labels,
+          // Her tilføjes alle dataværdier
+          datasets: [{
+            label: "",
+            data: [0],
+          }]
+        },
+        options: {
+          elements: {
+            point: {
+              radius: 0,
+              pointHitRadius: 5
+            }
+          },
+          interaction: {
+            mode: 'index',
+            intersect: false
+          },
+          hover: {
+            mode: 'index',
+            intersect: false
+          },
+        },
+      });
+      removeData()
+    }
+
+    function tabelSmittede(data) {
+      find_data_punkter(data)
+      // Ændrer grafens titel
+      document.getElementById('graftitel').innerHTML = "Smittetal pr. 100.000 indbyggere";
+      // Gør dataen global
+      landdata = JSON.parse(JSON.stringify(data))
+      // Console logger dataen
+      console.log(landdata)
+      // Finder datoerne i data og sætter dem lig til variablen datoer
+      datoer = data[0].slice(4)
+      // Konstruere grafen
+      var graf = document.getElementById('graph').getContext('2d');
+      var labels = datoer
+      myChart = new Chart(graf, {
+        type: 'line',
+        data: {
+          labels: labels,
+          // Her tilføjes alle dataværdier
+          datasets: [{
+            label: "",
+            data: [0],
+          }]
+        },
+        options: {
+          elements: {
+            point: {
+              radius: 0,
+              pointHitRadius: 5
+            }
+          },
+          interaction: {
+            mode: 'index',
+            intersect: false
+          },
+          hover: {
+            mode: 'index',
+            intersect: false
+          }
+        },
+      });
+      removeData()
+    }
+
+    function per_hundrede_tusind_omregner(data_liste, befolknings_tal) {
+      for (i = 0; i < data_liste.length; i++) {
+        data_liste[i] = Math.round((data_liste[i] / befolknings_tal) * 100000);
+      }
+      return data_liste
+    }
+
+    function tilfoejLand() {
+      // Tager value fra searchbar og fjerner værdien
+      land = document.getElementById("myInput").value
+      document.getElementById("myInput").value = ""
+      var index = countries.indexOf(land);
+      if (index >= 0) {
+        countries.splice(index, 1);
+      }
+
+      autocomplete(document.getElementById("myInput"), countries);
+
+      var valgt_land_data;
+      for (i = 0; i < countries_iso_and_population.length; i++) {
+        if (land == countries_iso_and_population[i].navne_dk) {
+          primaer_farve = countries_iso_and_population[i].primaer_farve
+          land_navn = countries_iso_and_population[i].navne_dk
+          population = countries_iso_and_population[i].population
+          // console.log(countries_iso_and_population[i].nummer)
+          unique_countries_iso_and_population_nummer = [...new Set(countries_iso_and_population[i].nummer)];
+          antallet_af_data_lister = unique_countries_iso_and_population_nummer.length
+          // console.log(unique_countries_iso_and_population_nummer)
+          var farver = ["#FF0000", "#0000FF", "#00FF00", "#FFFF00", "#FF00FF"];
+          if (antallet_af_data_lister > 2) {
+            landets_data = per_hundrede_tusind_omregner(addereLister(unique_countries_iso_and_population_nummer[0], unique_countries_iso_and_population_nummer[antallet_af_data_lister - 1], landdata).slice(4), population)
+          }
+          else {
+            landets_data = per_hundrede_tusind_omregner(landdata[unique_countries_iso_and_population_nummer].slice(4), countries_iso_and_population[i].population)
+          }
+          if (myChart.data.datasets.length < 5) {
+            var valgt_farve = farver[myChart.data.datasets.length];
+            // console.log(valgt_farve)
+            valgt_land_data = {
+              label: land_navn,
+              data: landets_data,
+              fill: false,
+              borderColor: valgt_farve,
+              tension: 0.1,
+            }
+          }
+          else {
+            alert("Grafen kan kun vise 5 lande på samme tid.\nFor at slette alle lande fra grafen tryk på knappen 'Slet alle'.")
+          }
+        }
+      }
+      if (myChart.data.datasets.length < 5) {
+        // Tjekker om dataet allerede findes på tabellen
+        var contains = false
+        for (i = 0; i < myChart.data.datasets.length; i++) {
+          if (myChart.data.datasets[i].label == valgt_land_data.label) {
+            contains = true
+          }
+        }
+        // Tilføjer dataet til tabellen hvis det ikke allerede findes
+        if (contains === false) {
+          myChart.data.datasets.push(valgt_land_data)
+          myChart.update();
+        }
+      }
+    }
+
+    function removeData() {
+      if (myChart.data.datasets) {
+        // console.log(countries)
+        for (i = 0; i < countries_iso_and_population.length; i++) {
+          land_i_liste = countries.includes(countries_iso_and_population[i].navne_dk)
+          if (land_i_liste === false) {
+            // console.log(countries_iso_and_population[i])
+            countries.push(countries_iso_and_population[i].navne_dk)
+          }
+        }
+        myChart.data.datasets.splice(0, myChart.data.datasets.length)
+        myChart.update();
+        autocomplete(document.getElementById("myInput"), countries);
+      }
+    }
+
+    function autocomplete(inp, arr) {
+      /*the autocomplete function takes two arguments,
+      the text field element and an array of possible autocompleted values:*/
+      var currentFocus;
+      /*execute a function when someone writes in the text field:*/
+      inp.addEventListener("input", function (e) {
+        var a, b, i, val = this.value;
+        /*close any already open lists of autocompleted values*/
+        closeAllLists();
+        if (!val) { return false; }
+        currentFocus = -1;
+        /*create a DIV element that will contain the items (values):*/
+        a = document.createElement("DIV");
+        a.setAttribute("id", this.id + "autocomplete-list");
+        a.setAttribute("class", "autocomplete-items");
+        /*append the DIV element as a child of the autocomplete container:*/
+        this.parentNode.appendChild(a);
+        /*for each item in the array...*/
+        for (i = 0; i < arr.length; i++) {
+          /*check if the item starts with the same letters as the text field value:*/
+          if (arr[i].substr(0, val.length).toUpperCase() == val.toUpperCase()) {
+            /*create a DIV element for each matching element:*/
+            b = document.createElement("DIV");
+            /*make the matching letters bold:*/
+            b.innerHTML = "<strong>" + arr[i].substr(0, val.length) + "</strong>";
+            b.innerHTML += arr[i].substr(val.length);
+            /*insert a input field that will hold the current array item's value:*/
+            b.innerHTML += "<input type='hidden' value='" + arr[i] + "'>";
+            /*execute a function when someone clicks on the item value (DIV element):*/
+            b.addEventListener("click", function (e) {
+              /*insert the value for the autocomplete text field:*/
+              inp.value = this.getElementsByTagName("input")[0].value;
+              /*close the list of autocompleted values,
+              (or any other open lists of autocompleted values:*/
+              closeAllLists();
+            });
+            a.appendChild(b);
+          }
+        }
+      });
+
+      /*execute a function presses a key on the keyboard:*/
+      inp.addEventListener("keydown", function (e) {
+        var x = document.getElementById(this.id + "autocomplete-list");
+        if (x) x = x.getElementsByTagName("div");
+        if (e.keyCode == 40) {
+          /*If the arrow DOWN key is pressed,
+          increase the currentFocus variable:*/
+          currentFocus++;
+          /*and and make the current item more visible:*/
+          addActive(x);
+        } else if (e.keyCode == 38) { //up
+          /*If the arrow UP key is pressed,
+          decrease the currentFocus variable:*/
+          currentFocus--;
+          /*and and make the current item more visible:*/
+          addActive(x);
+        } else if (e.keyCode == 13) {
+          /*If the ENTER key is pressed, prevent the form from being submitted,*/
+          e.preventDefault();
+          if (currentFocus > -1) {
+            /*and simulate a click on the "active" item:*/
+            if (x) x[currentFocus].click();
+          }
+        }
+
+      });
+      function addActive(x) {
+        /*a function to classify an item as "active":*/
+        if (!x) return false;
+        /*start by removing the "active" class on all items:*/
+        removeActive(x);
+        if (currentFocus >= x.length) currentFocus = 0;
+        if (currentFocus < 0) currentFocus = (x.length - 1);
+        /*add class "autocomplete-active":*/
+        x[currentFocus].classList.add("autocomplete-active");
+      }
+
+      function removeActive(x) {
+        /*a function to remove the "active" class from all autocomplete items:*/
+        for (var i = 0; i < x.length; i++) {
+          x[i].classList.remove("autocomplete-active");
+        }
+      }
+
+      function closeAllLists(elmnt) {
+        /*close all autocomplete lists in the document,
+        except the one passed as an argument:*/
+        var x = document.getElementsByClassName("autocomplete-items");
+        for (var i = 0; i < x.length; i++) {
+          if (elmnt != x[i] && elmnt != inp) {
+            x[i].parentNode.removeChild(x[i]);
+          }
+        }
+      }
+      /*execute a function when someone clicks in the document:*/
+      document.addEventListener("click", function (e) {
+        closeAllLists(e.target);
+      });
+    }
+
+    // Addere dataet fra listerne sammen
+    function addereLister(start, slut, landdata) {
+      // console.log("Start: " + start)
+      // console.log("Slut: " + slut)
+      // console.log(landdata)
+      var nyliste = landdata[start]
+      for (i = start + 1; i < slut + 1; i++) {
+        for (j = 0; j < nyliste.length; j++) {
+          nyliste[j] += landdata[i][j]
+        }
+      }
+      // console.log(nyliste)
+      return nyliste
+    }
+
+    test_browser_er_safari()
+  </script>
+
+  <div class="footer-wrapper">
+    <div class="footer-items">
+      <div class="footer-item">
+        <div class="footer-header">
+          <h1> DATAMATERIALE </h1>
+        </div>
+        <div class="footer-link-wrapper">
+          <a
+            href="https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_deaths_global.csv">
+            <p> Dødstal </p>
+          </a>
+        </div>
+        <div class="footer-link-wrapper">
+          <a
+            href="https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv">
+            <p> Smittede </p>
+          </a>
+        </div>
+      </div>
+
+      <div class="footer-item">
+        <h1> LAVET AF </h1>
+        <p> Adam 2018y</p>
+        <p> Carl 2018y</p>
+        <p> Linus 2018y</p>
+        <p> Olivia 2018y</p>
+        <p> ...som et projekt i informatik</p>
+      </div>
+
+      <div class="footer-item">
+        <h1> ANDRE PROJEKTER </h1>
+        <div class="footer-link-wrapper">
+          <a
+            href="https://linusjunirys.github.io/web/rysfester.html">
+            <p> Rysensteen-hjemmeside </p>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!--
+  <div class="footer">
+    <p class="footer-element">Lavet af Carl 2018y, Linus 2018y, Olivia 2018y, Adam 2018y</p>
+    <p class="footer-element">I samarbejde med <a href="https://rysensteen.dk" target="_blank">Rysensteen
+                Gymnasium</a></p>
+  </div>
+  -->
+</body>
+
+</html>
