@@ -13,7 +13,9 @@
     integrity="sha512-rKFvwjvE4liWPlFnvH4ZhRDfNZ9FOpdkD/BU5gAIA3VS3vOQrQ5BjKgbO3kxebKhHdHcNUHLqxQYSoxee9UwgA=="
     crossorigin="anonymous"></script>
   <!-- Laver favicon -->
-  <link rel="icon" href="favicon.ico">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
   <link rel="manifest" href="/site.webmanifest">
   <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
   <meta name="msapplication-TileColor" content="#da532c">
@@ -2081,7 +2083,7 @@
 
       var valgt_land_data;
       for (i = 0; i < countries_iso_and_population.length; i++) {
-        if (land == countries_iso_and_population[i].navne_dk) {
+        if (land.toLowerCase() == countries_iso_and_population[i].navne_dk.toLowerCase()) {
           primaer_farve = countries_iso_and_population[i].primaer_farve
           land_navn = countries_iso_and_population[i].navne_dk
           population = countries_iso_and_population[i].population
