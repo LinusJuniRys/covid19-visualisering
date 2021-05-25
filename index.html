@@ -29,7 +29,7 @@
     .nav-wrapper {
       display: flex;
       justify-content: space-between;
-      padding-left: 38px;
+      padding-left: 60px;
       padding-bottom: 10px;
       padding-top: 10px;
       margin-bottom: -2px;
@@ -109,6 +109,9 @@
     .footer-items {
       display: flex;
       padding-left: auto;
+      /* HVIS FOOTER SKAL VÆRE CENTRERET
+      align-items: center;
+      justify-content: center;*/
     }
 
     .footer-item {
@@ -244,7 +247,7 @@
       <div class="right-side">
         <div class="rysensteen-logo">
           <!-- Husk at lave Rysensteen logo om til et link igen -->
-          <a href="https://rysensteen.dk">
+          <a href="https://rysensteen.dk" target="_blank">
           <img src="https://i.imgur.com/Ps5tbZw.png" alt="rysensteen-logo" style="width: 80px"
             onclick="test_funktion()">
           </a>
@@ -262,7 +265,7 @@
   </div>
   <canvas id="graph" width="window.innerWidth" height="window.innerHeight"></canvas>
   <script>
-    alert("Denne hjemmeside kan vise dig smitte- og dødstal i forbindelse med covid-19!")
+    // alert("Denne hjemmeside kan vise dig smitte- og dødstal i forbindelse med covid-19!")
     // Definere variablen der kommer til at indeholde selve grafen
     var myChart;
     // Definere listen der kommer til at indeholde alt data fra github omkring smittede/døde
@@ -2248,8 +2251,11 @@
     function addereLister(start, slut, landdata) {
       // console.log("Start: " + start)
       // console.log("Slut: " + slut)
-      // console.log(landdata)
-      var nyliste = landdata[start]
+      console.log(landdata[start])
+      var nyliste = []
+      for (i = 0; i < landdata[start].length; i++) {
+          nyliste.push(landdata[start][i])
+      }
       for (i = start + 1; i < slut + 1; i++) {
         for (j = 0; j < nyliste.length; j++) {
           nyliste[j] += landdata[i][j]
@@ -2295,7 +2301,7 @@
         <h1> ANDRE PROJEKTER </h1>
         <div class="footer-link-wrapper">
           <a
-            href="https://linusjunirys.github.io/web/index.html">
+            href="https://linusjunirys.github.io/web/index.html" target="_blank">
             <p> Rysensteen-hjemmeside </p>
           </a>
         </div>
