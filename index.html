@@ -62,7 +62,7 @@
     }
 
     .rysensteen-logo {
-      margin-top: 25px;
+      margin-top: 30px;
       margin-right: 10px;
     }
 
@@ -77,6 +77,7 @@
     }
 
     .graftitel_class {
+      padding-top: 10px;
       text-align: center;
     }
 
@@ -246,7 +247,7 @@
 
       <div class="right-side">
         <div class="rysensteen-logo">
-          <!-- Husk at lave Rysensteen logo om til et link igen -->
+          <!-- Husk at lave Rysensteen logo om til et link igen (DONE)-->
           <a href="https://rysensteen.dk" target="_blank">
           <img src="https://i.imgur.com/Ps5tbZw.png" alt="rysensteen-logo" style="width: 80px"
             onclick="test_funktion()">
@@ -2087,10 +2088,10 @@
           primaer_farve = countries_iso_and_population[i].primaer_farve
           land_navn = countries_iso_and_population[i].navne_dk
           population = countries_iso_and_population[i].population
-          // console.log(countries_iso_and_population[i].nummer)
+          console.log(countries_iso_and_population[i].nummer)
           unique_countries_iso_and_population_nummer = [...new Set(countries_iso_and_population[i].nummer)];
           antallet_af_data_lister = unique_countries_iso_and_population_nummer.length
-          // console.log(unique_countries_iso_and_population_nummer)
+          //console.log(unique_countries_iso_and_population_nummer)
           var farver = ["#FF0000", "#0000FF", "#00FF00", "#FFFF00", "#FF00FF"];
           if (antallet_af_data_lister > 2) {
             landets_data = per_hundrede_tusind_omregner(addereLister(unique_countries_iso_and_population_nummer[0], unique_countries_iso_and_population_nummer[antallet_af_data_lister - 1], landdata).slice(4), population)
@@ -2251,21 +2252,23 @@
     function addereLister(start, slut, landdata) {
       // console.log("Start: " + start)
       // console.log("Slut: " + slut)
-      console.log(landdata[start])
       var nyliste = []
       for (i = 0; i < landdata[start].length; i++) {
           nyliste.push(landdata[start][i])
       }
+
       for (i = start + 1; i < slut + 1; i++) {
         for (j = 0; j < nyliste.length; j++) {
           nyliste[j] += landdata[i][j]
         }
       }
-      // console.log(nyliste)
+      console.log(nyliste)
       return nyliste
     }
 
-    test_browser_er_safari()
+    test_browser_er_safari();
+
+
   </script>
 
   <div class="footer-wrapper">
